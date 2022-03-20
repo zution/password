@@ -526,26 +526,12 @@ function generateRandNum(min, max, seed) {
   return Math.round(result);
 }
 
-var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-
-function generatePassword(userPassword, site, pin, length) {
-  // checks for any length errors
-/*  if (userPassword.length < 15) {
-    return "The length of any password may not be shorter than 15 characters.";
-  } else if (userPassword.length > 100) {
-    return "That password is too long!";
-  }
-  if (pin.length != 4) {
-    return "Please make sure your PIN is 4 digits long.";
-  }
-  if (length < 15) {
-    return "Please make sure your password is at least 15 characters long.";
-  } else if (length > 64) {
-    return "The password is not allowed to be greater than 64 characters.";
-  }*/
+function generatePassword(userPassword, site, pin, length, username) {
   
   // encodes it once with sha256
-  var password = sha256(userPassword + site);
+  var password = sha256(userPassword + site + username);
+  password = sha256(password);
+  password = sha256(password);
     
   // encodes it for a certain number of times with sha256 and sha224
   for (let i = 0; i < pin.charAt(0); i++) {
@@ -555,13 +541,6 @@ function generatePassword(userPassword, site, pin, length) {
     password = sha224(password);
   }
 
-  /* '
-    capital letter to better fit with most website password requirements
-    CURRENTLY NOT WORKING
-    
-    password += letters[pin.charAt(2)];
-  */
-
   // adds some symbols for added security
   var number;
   var symbol;
@@ -569,9 +548,9 @@ function generatePassword(userPassword, site, pin, length) {
   var symbols = ["!", "@", "#", "$", "%", "^", "&", "*", "?", "/"];
   for (let i = 0; i < 4; i++) {
     symbol = symbols[pin.charAt(i)];
-    let sha = sha256(site);
+    let sha = sha256(site + username);
     let numero;
-    // turning the site into a number
+    // turning the site and username into a number
     for (let j = 0; j < 64; j++) {
       // if it is a number, then save that number and use it
       if (!isNaN(Number(sha.charAt(j)))) {
@@ -587,18 +566,6 @@ function generatePassword(userPassword, site, pin, length) {
 
   // returns password
   return password;
-  function copy(text) {
-    const el = document.createElement("textarea");
-    el.innerHTML = text;
-    el.setAttribute("id","copyAndPasteElementAndStuff");
-    document.getElementsByTagName('body')[0].appendChild(el);
-    var copyText = document.getElementById("copyAndPasteElementAndStuff");
-    copyText.select();
-    copyText.setSelectionRange(0, 99);
-    navigator.clipboard.writeText(copyText.value);
-    alert("Text copied.");
-    el.remove();
-  }
   copy(password);
 }
 
@@ -616,12 +583,12 @@ function copy(text) {
 }
 
 function askUser() {
+  var inputUsername = prompt("Username")
   var inputPassword = prompt("Password");
-  var inputSite = document.location.host;
   var inputPin = prompt("PIN");
   var inputLength = prompt("Length");
-  alert(generatePassword(inputPassword, inputSite, inputPin, inputLength));
-  copy(generatePassword(inputPassword, inputSite, inputPin, inputLength))
+  var inputSite = document.location.host;
+  copy(generatePassword(inputPassword, inputSite, inputPin, inputLength, inputUsername));
 }
 
 askUser();
