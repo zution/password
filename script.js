@@ -587,6 +587,32 @@ function generatePassword(userPassword, site, pin, length) {
 
   // returns password
   return password;
+  function copy(text) {
+    const el = document.createElement("textarea");
+    el.innerHTML = text;
+    el.setAttribute("id","copyAndPasteElementAndStuff");
+    document.getElementsByTagName('body')[0].appendChild(el);
+    var copyText = document.getElementById("copyAndPasteElementAndStuff");
+    copyText.select();
+    copyText.setSelectionRange(0, 99);
+    navigator.clipboard.writeText(copyText.value);
+    alert("Text copied.");
+    el.remove();
+  }
+  copy(password);
+}
+
+function copy(text) {
+  const el = document.createElement("textarea");
+  el.innerHTML = text;
+  el.setAttribute("id","copyAndPasteElementAndStuff");
+  document.getElementsByTagName('body')[0].appendChild(el);
+  var copyText = document.getElementById("copyAndPasteElementAndStuff");
+  copyText.select();
+  copyText.setSelectionRange(0, 99);
+  navigator.clipboard.writeText(copyText.value);
+  alert("Password copied!");
+  el.remove();
 }
 
 function askUser() {
@@ -595,6 +621,7 @@ function askUser() {
   var inputPin = prompt("PIN");
   var inputLength = prompt("Length");
   alert(generatePassword(inputPassword, inputSite, inputPin, inputLength));
+  copy(generatePassword(inputPassword, inputSite, inputPin, inputLength))
 }
 
 askUser();
