@@ -530,14 +530,21 @@ function generatePassword(userPassword, site, pin, length, username) {
   
   // encodes it once with sha256
   var password = sha256(userPassword + site + username);
-  password = sha256(password);
-  password = sha256(password);
+  for (let i = 0; i < 100000; i++) {
+    password = sha256(password);
+  }
     
   // encodes it for a certain number of times with sha256 and sha224
-  for (let i = 0; i < pin.charAt(0); i++) {
+  for (let i = 0; i < pin.charAt(0) * generateRandNum(1000, 2000, pin.charAt(3)); i++) {
     password = sha256(password);
   }   
-  for (let i = 0; i < pin.charAt(1); i++) {
+  for (let i = 0; i < pin.charAt(1) * generateRandNum(1000, 2000, pin.charAt(1)); i++) {
+    password = sha224(password);
+  }
+  for (let i = 0; i < pin.charAt(2) * generateRandNum(1000, 2000, pin.charAt(2)); i++) {
+    password = sha224(password);
+  }
+  for (let i = 0; i < pin.charAt(3) * generateRandNum(1000, 2000, pin.charAt(0)); i++) {
     password = sha224(password);
   }
 
@@ -546,7 +553,7 @@ function generatePassword(userPassword, site, pin, length, username) {
   var symbol;
   // declares symbols
   var symbols = ["!", "@", "#", "$", "%", "^", "&", "*", "?", "/"];
-  for (let i = 0; i < 4; i++) {
+  for (let i = 4; i < 8; i++) {
     symbol = symbols[pin.charAt(i)];
     let sha = sha256(site + username);
     let numero;
