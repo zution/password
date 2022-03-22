@@ -72,8 +72,15 @@
       
       el = document.createElement("button");
       el.setAttribute("onclick", "myFunction();");
-      el.innerHTML = "hello";
+      el.setAttribute("id", "generateButton");
+      el.innerHTML = "Copy Password";
       document.getElementById("coolPasswordThing").appendChild(el);
+      el = document.getElementById("generateButton");
+      el.style.backgroundColor = "white";
+      el.style.borderRadius = "5px";
+      el.style.borderStyle = "solid";
+      el.style.borderColor = "grey";
+      el.style.padding = "5px";
 
       // sets positioning
       el = document.getElementById('coolPasswordThing');
